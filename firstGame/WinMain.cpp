@@ -6,9 +6,9 @@
 #define IMGWIDTH 62
 #define IMGHEIGHT 62
 
-#define BALL_SPEED 4
-#define SIKAKU_SPEED 3
-#define SHOT_SPEED 2
+#define BALL_SPEED 5
+#define SIKAKU_SPEED 4
+#define SHOT_SPEED 9
 
 
 enum Direction
@@ -25,6 +25,21 @@ struct Ball
 	int handle;
 };
 
+struct Sikaku
+{
+	int x;
+	int y;
+	int handle;
+	int muki;
+};
+
+struct Shot
+{
+	int x;
+	int y;
+	int handle;
+	int flag;
+};
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 {
@@ -42,23 +57,19 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	ball.y=IMGHEIGHT * 5;
 	ball.handle= LoadGraph("img/Ball.png");
 
+	Shot shot;
+	shot.x = 0;
+	shot.y = 0;
+	shot.handle = LoadGraph("img/Shot.png");
+	shot.flag = 0;
 	
-	int shotX = 0;
-	int shotY = 0;
-	int handle_shot = LoadGraph("img/Shot.png");
+	Sikaku sikaku;
+	sikaku.x = IMGWIDTH * 1;
+	sikaku.y = IMGHEIGHT * 1;
+	sikaku.handle = LoadGraph("img/Sikaku.png");
+	sikaku.muki = 0;
 
 	
-
-	int sikakuX = IMGWIDTH * 1;
-	int sikakuY = IMGHEIGHT * 1;
-	int handle_sikaku = LoadGraph("img/Sikaku.png");
-
-		/*int newX = ball.x;
-		int newY = ball.y;*/
-		
-		int sikaku_muki=0;
-
-		int shotFlag = 0;
 
 	while (CheckHitKey(KEY_INPUT_ESCAPE) == 0)
 	{
@@ -84,47 +95,47 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		if (ball.y >(MAXHEIGHT*IMGHEIGHT))
 			ball.y = (MAXHEIGHT*IMGHEIGHT);
 		
-		if (CheckHitKey(KEY_INPUT_Z) && shotFlag == 0)
+		if (CheckHitKey(KEY_INPUT_Z) && shot.flag == 0)
 		{
-			shotX = ball.x + IMGWIDTH / 2;
-			shotY = ball.y + 2;
-			shotFlag = 1;
+			shot.x = ball.x + IMGWIDTH / 2;
+			shot.y = ball.y + 2;
+			shot.flag = 1;
 
 		}
-		if (shotFlag)
+
+
+		if (shot.flag)
 		{
-			shotY -= SHOT_SPEED;
-			DrawGraph(shotX, shotY, handle_shot, FALSE);
+			shot.y -= SHOT_SPEED;
+			DrawGraph(shot.x, shot.y, shot.handle, FALSE);
 		}
 
 		
 
-		if (sikaku_muki == RIGHT)
-			sikakuX += SIKAKU_SPEED;
-		else if (sikaku_muki == LEFT)
-			sikakuX -= SIKAKU_SPEED;
+		if (sikaku.muki == RIGHT)
+			sikaku.x += SIKAKU_SPEED;
+		else if (sikaku.muki == LEFT)
+			sikaku.x -= SIKAKU_SPEED;
 
-		if (sikakuX > (MAXWIDTH - 0.5)*IMGWIDTH)
+
+		if (sikaku.x > (MAXWIDTH - 0.5)*IMGWIDTH)
 		{
-			sikakuX = (MAXWIDTH - 0.5)*IMGWIDTH;
-			sikaku_muki = LEFT;
+			sikaku.x = (MAXWIDTH - 0.5)*IMGWIDTH;
+			sikaku.muki = LEFT;
 		}
-		else if (0 > sikakuX)
+		else if (0 > sikaku.x)
 		{
-			sikakuX = 0;
-			sikaku_muki = RIGHT;
+			sikaku.x = 0;
+			sikaku.muki = RIGHT;
 		}
 
-		if (shotFlag == 1 && shotY < -5)
+		if (shot.flag == 1 && shot.y < -5)
 		{
-			shotFlag = 0;
+			shot.flag = 0;
 		}
-		/*if (sikakuX < (MAXWIDTH - 0.5)*IMGWIDTH)
-			sikakuX += 2;
-		else if (0 < sikakuX)
-			sikakuX -= 2;*/
+		
 
-		DrawGraph(sikakuX, sikakuY, handle_sikaku, FALSE);
+		DrawGraph(sikaku.x, sikaku.y, sikaku.handle, FALSE);
 		DrawGraph(ball.x, ball.y, ball.handle, FALSE);
 		ScreenFlip();
 		if (ProcessMessage() == -1)
