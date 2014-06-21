@@ -1,4 +1,4 @@
-﻿2014/06/15 16:39:24 にビルドを開始しました。
+﻿2014/06/21 11:00:29 にビルドを開始しました。
      1>ノード 2 上のプロジェクト "C:\Users\日憂雅\Documents\FirstShootingGame2\firstGame\firstGame.vcxproj" (Build ターゲット)。
      1>C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V120\Microsoft.CppBuild.targets(381,5): warning MSB8028: The intermediate directory (Debug\) contains files shared from another project (firstGame.vcxproj).  This can lead to incorrect clean and rebuild behavior.
      1>ClCompile:
@@ -18,4 +18,4 @@
 
 ビルドに失敗しました。
 
-経過時間 00:00:01.89
+経過時間 00:00:01.24
